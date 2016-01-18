@@ -1,11 +1,16 @@
 "use strict";
 
 var http = require('http');
+var https = require('https');
 var fs = require('fs');
 
 function httpGet(url) {
   return new Promise(function (resolve, reject) {
-    http.get(url, function(res) {
+    var proto = http;
+    if (url.startsWith('https')) {
+      proto = https;
+    }
+    proto.get(url, function(res) {
       var body = '';
       res.on('data', function(data){
         body += data;
